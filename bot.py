@@ -4,6 +4,8 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
 from pathlib import Path 
 from dotenv import load_dotenv
 from slack_sdk import WebClient
+from PIL import Image
+from models.diffusion_gen import *
 
 # Loads environment variables from .env file
 env_path = Path('.') / '.env'
@@ -11,19 +13,30 @@ load_dotenv(dotenv_path=env_path)
 
 # Initializes slack app with bot tokens
 app = App(token=os.environ['SLACK_TOKEN'])
-client = WebClient(token=os.environ['SLACK_TOKEN'])
 
-#Listen and handle slash command for stable diffusion image generation
+# Get modules 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+gen_model = DiffusionGenerationV2(device=device)
+
+# Load Models 
+gen_model.load_module()
+
+# Listen and handle slash command for stable diffusion image generation
 @app.command("/create-image")
 def create_image(ack, command, client):
 
-    #Acknowledge command request from slack
+    # Acknowledge command request from slack
     ack()
 
-    #Get prompt from command text and add midjourney style to it
-    prompt = f"mdjrny-v4 style {command['text']}"
+    # Get prompt from command text and add midjourney style to it
+    prompt = f"Create an Image about {command['text']}"
 
-    #Post message to channel indicating that image is being generated
+    # Gen Image
+    generated_image = gen_model.generate_image(prompt)
+    # Save image to file
+    generated_image.save('Image.jpg')
+
+    # Post message to channel indicating that image is being generated
     initial_message = client.chat_postMessage(channel=command["channel_id"], text="Generating image...")
 
     with open('Image.jpg', 'rb') as f:

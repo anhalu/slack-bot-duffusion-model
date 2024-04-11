@@ -5,3 +5,5 @@ python-dotenv
 flask
 slack_sdk
 pathlib
+torch 
+
