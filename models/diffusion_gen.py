@@ -45,7 +45,7 @@ class DiffusionGenerationV2(Text2ImgSD):
     def load_module(self, module_path= "stabilityai/stable-diffusion-2-inpainting"):
         generate_pipe = StableDiffusionPipeline.from_pretrained(
             module_path,
-            torch_dtype=torch.float16,
+            torch_dtype=torch.float32,
         )
 
         self.generate_pipe = generate_pipe.to(self.device)
