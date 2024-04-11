@@ -1,0 +1,7 @@
+# Python 3.12.2
+slackclient
+slack_bolt
+python-dotenv
+flask
+slack_sdk
+pathlib
