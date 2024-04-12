@@ -1,17 +1,12 @@
-# Python 3.12.2 or 3.10.2
-slackclient
+# python 3.8 for stable
 slack_bolt
-python-dotenv
-flask
-slack_sdk
-pathlib
-torch
-pillow
-diffusers
+torch==2.0.1
 opencv-python
-transformers
-ftfy
+python-decouple
+decouple
+argparse
+
+# for hugging face
+diffusers
 accelerate
-pipe
-huggingface_hub
-safetensors 
+transformers
