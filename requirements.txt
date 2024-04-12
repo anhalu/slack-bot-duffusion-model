@@ -1,9 +1,17 @@
-# Python 3.12.2
+# Python 3.12.2 or 3.10.2
 slackclient
 slack_bolt
 python-dotenv
 flask
 slack_sdk
 pathlib
-torch 
-
+torch
+pillow
+diffusers
+opencv-python
+transformers
+ftfy
+accelerate
+pipe
+huggingface_hub
+safetensors 

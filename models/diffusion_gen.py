@@ -63,12 +63,7 @@ class DiffusionGenerationV2(Text2ImgSD):
         """
 
         # Apply pipeline
-        generator = torch.Generator(self.device).manual_seed(42)
-        result = self.generate_pipe(
-            prompt= prompt,
-            generator=generator,
-        )
+        result = self.generate_pipe(prompt= prompt)
         output_image = result.images[0]
 
         return output_image
-        

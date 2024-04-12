@@ -19,7 +19,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 gen_model = DiffusionGenerationV2(device=device)
 
 # Load Models 
-gen_model.load_module()
+gen_model.load_module(module_path= "runwayml/stable-diffusion-v1-5")
 
 # Listen and handle slash command for stable diffusion image generation
 @app.command("/create-image")
