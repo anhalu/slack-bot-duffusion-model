@@ -10,7 +10,7 @@ class DiffusionGenerationV2(Text2ImgSD):
     Using Stable Diffusion 1.5 from runwayml
     """
 
-    def __init__(self, device, torch_dtype=16):
+    def __init__(self, device, torch_dtype=16, num_inference_steps=50):
         """
         Args:
             device (torch.device): Device used.
@@ -25,6 +25,7 @@ class DiffusionGenerationV2(Text2ImgSD):
         else:
             self.torch_dtype = torch.float32
         self.generator = torch.Generator("cuda").manual_seed(0)
+        self.num_inference_steps = num_inference_steps
 
     def load_checkpoint(self, checkpoint_name="stabilityai/stable-diffusion-2-inpainting"):
         generate_pipe = StableDiffusionPipeline.from_pretrained(
@@ -44,7 +45,8 @@ class DiffusionGenerationV2(Text2ImgSD):
         """
 
         # Apply pipeline
-        result = self.generate_pipe(prompt=prompt, generator=self.generator, width=width, height=height)
+        result = self.generate_pipe(prompt=prompt, generator=self.generator, width=width, height=height,
+                                    num_inference_steps=self.num_inference_steps)
         generated_image = result.images[0]
 
         return generated_image

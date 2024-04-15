@@ -45,15 +45,16 @@ def create_image(ack, command, client):
 
 
 def run(args):
-    global checkpoint_name, width_image, height_image, torch_dtype
+    global checkpoint_name, width_image, height_image, torch_dtype, num_inference_steps
     global gen_model
     checkpoint_name = args.checkpoint_name
     width_image = args.width_image
     height_image = args.height_image
     torch_dtype = args.torch_dtype
+    num_inference_steps = args.num_inference_steps
 
     # load model checkpoint from huggingface
-    gen_model = DiffusionGenerationV2(device=device, torch_dtype=torch_dtype)
+    gen_model = DiffusionGenerationV2(device=device, torch_dtype=torch_dtype, num_inference_steps=num_inference_steps)
     gen_model.load_checkpoint(checkpoint_name=checkpoint_name)
 
     # start app
@@ -62,10 +63,11 @@ def run(args):
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--checkpoint-name', '-cn', type=str, default=checkpoint_name)
-    parser.add_argument('--width-image', '-wi', type=int, default=width_image)
-    parser.add_argument('--height-image', '-hi', type=int, default=height_image)
-    parser.add_argument('--torch-dtype', '-td', type=int, default=height_image)
+    parser.add_argument('-cn', '--checkpoint-name', type=str, default=checkpoint_name)
+    parser.add_argument('-wi', '--width-image', type=int, default=width_image)
+    parser.add_argument('-hi', '--height-image', type=int, default=height_image)
+    parser.add_argument('-td', '--torch-dtype', type=int, default=height_image)
+    parser.add_argument('-n', '--num_inference_steps', type=int, default=num_inference_steps)
     args = parser.parse_args()
     return args
 

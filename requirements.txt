@@ -3,8 +3,8 @@ slack_bolt
 torch==2.0.1
 opencv-python
 python-decouple
-decouple
 argparse
+pyyaml
 
 # for hugging face
 diffusers
