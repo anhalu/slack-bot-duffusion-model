@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  models:
+    build:
+      dockerfile: Dockerfile
+      context: models/
+  backend_app:
+    build:
+      dockerfile: Dockerfile
+      context: slackBot/

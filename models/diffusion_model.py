@@ -1,7 +1,7 @@
 import torch
 from diffusers import StableDiffusionPipeline
 
-from models.base import Text2ImgSD
+from base import Text2ImgSD
 
 
 class DiffusionGenerationV2(Text2ImgSD):
@@ -27,7 +27,7 @@ class DiffusionGenerationV2(Text2ImgSD):
         self.generator = torch.Generator("cuda").manual_seed(0)
         self.num_inference_steps = num_inference_steps
 
-    def load_checkpoint(self, checkpoint_name="stabilityai/stable-diffusion-2-inpainting"):
+    def load_checkpoint(self, checkpoint_name="stabilityai/stable-diffusion-2-1"):
         generate_pipe = StableDiffusionPipeline.from_pretrained(
             checkpoint_name,
             torch_dtype=self.torch_dtype,

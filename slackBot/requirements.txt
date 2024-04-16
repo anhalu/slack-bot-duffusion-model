@@ -1,0 +1,16 @@
+# python 3.8 for stable
+slack_bolt
+torch==2.0.1
+opencv-python
+python-decouple
+argparse
+pyyaml
+
+# for hugging face
+diffusers
+accelerate
+transformers
+
+# fastapi 
+fastapi 
+uvicorn[standard]

@@ -10,3 +10,7 @@ pyyaml
 diffusers
 accelerate
 transformers
+
+# fastapi 
+fastapi 
+uvicorn[standard]

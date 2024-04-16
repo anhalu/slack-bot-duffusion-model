@@ -2,8 +2,9 @@ import io
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 import argparse
-from models.diffusion_model import DiffusionGenerationV2
 from parameters import *
+from modulesAPI.modules import *
+import base64
 
 # Initializes Slack app with bot tokens and gen model
 app = App(token=SLACK_BOT_TOKEN)
@@ -20,14 +21,16 @@ def create_image(ack, command, client):
     prompt = f"Create an Image about {command['text']}"
 
     # Gen Image and convert to binary format
-    image = gen_model.generate_image(prompt, width=width_image, height=height_image)
-    image_binary = io.BytesIO()
-    image.save(image_binary, format='JPEG')
-    image_binary_bytes = image_binary.getvalue()
+    # image = gen_model.generate_image(prompt, width=width_image, height=height_image)
+    # image_binary = io.BytesIO()
+    # image.save(image_binary, format='JPEG')
+    # image_binary_bytes = image_binary.getvalue()
+    response = genImage(prompt=prompt)
+    image_bytes = base64.b64decode(response["image_base64"])
 
     # Post message to channel indicating that image is being generated
     initial_message = client.chat_postMessage(channel=command["channel_id"], text="Generating image...")
-    client.files_upload_v2(file=image_binary_bytes, filename='Generated_Image.jpg', channels=command["channel_id"])
+    client.files_upload_v2(file=image_bytes, filename='Generated_Image.jpg', channels=command["channel_id"])
 
     client.chat_update(
         channel=command["channel_id"],
@@ -54,8 +57,7 @@ def run(args):
     num_inference_steps = args.num_inference_steps
 
     # load model checkpoint from huggingface
-    gen_model = DiffusionGenerationV2(device=device, torch_dtype=torch_dtype, num_inference_steps=num_inference_steps)
-    gen_model.load_checkpoint(checkpoint_name=checkpoint_name)
+    gen_model = setModel(device='cuda', torch_dtype=args.torch_dtype, num_inference_steps=args.num_inference_steps, checkpoint_name=args.checkpoint_name)
 
     # start app
     SocketModeHandler(app, SLACK_APP_TOKEN).start()
@@ -63,11 +65,11 @@ def run(args):
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-cn', '--checkpoint-name', type=str, default=checkpoint_name)
-    parser.add_argument('-wi', '--width-image', type=int, default=width_image)
-    parser.add_argument('-hi', '--height-image', type=int, default=height_image)
-    parser.add_argument('-td', '--torch-dtype', type=int, default=height_image)
-    parser.add_argument('-n', '--num_inference_steps', type=int, default=num_inference_steps)
+    parser.add_argument('-cn', '--checkpoint-name', type=str, default="stabilityai/stable-diffusion-2-1")
+    parser.add_argument('-wi', '--width-image', type=int, default=512)
+    parser.add_argument('-hi', '--height-image', type=int, default=512)
+    parser.add_argument('-td', '--torch-dtype', type=int, default=16)
+    parser.add_argument('-n', '--num_inference_steps', type=int, default=50)
     args = parser.parse_args()
     return args
 
