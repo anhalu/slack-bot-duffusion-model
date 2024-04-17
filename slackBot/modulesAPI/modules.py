@@ -2,7 +2,7 @@ import requests
 import json
 
 def setModel(device="cuda", torch_dtype=16, num_inference_steps=50,checkpoint_name="stabilityai/stable-diffusion-2-1"): 
-    url = "http://127.0.0.1:8081/load_models/"
+    url = "http://models_service:8081/load_models/"
 
     payload = json.dumps({
     "device": device,
@@ -20,7 +20,7 @@ def setModel(device="cuda", torch_dtype=16, num_inference_steps=50,checkpoint_na
 
 
 def genImage(prompt= "", width_image=512, height_image=512):
-    url = "http://127.0.0.1:8081/gen_image/"
+    url = "http://models_service:8081/gen_image/"
 
     payload = json.dumps({
     "prompt": prompt,
@@ -36,6 +36,3 @@ def genImage(prompt= "", width_image=512, height_image=512):
     response = response.json()
 
     return response
-
-test = setModel()
-print(test)

@@ -57,7 +57,7 @@ def run(args):
     num_inference_steps = args.num_inference_steps
 
     # load model checkpoint from huggingface
-    gen_model = setModel(device='cuda', torch_dtype=args.torch_dtype, num_inference_steps=args.num_inference_steps, checkpoint_name=args.checkpoint_name)
+    # gen_model = setModel(device='cuda', torch_dtype=args.torch_dtype, num_inference_steps=args.num_inference_steps, checkpoint_name=args.checkpoint_name)
 
     # start app
     SocketModeHandler(app, SLACK_APP_TOKEN).start()

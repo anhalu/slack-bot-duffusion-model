@@ -5,9 +5,6 @@ services:
     build:
       dockerfile: Dockerfile
       context: slackBot/
-    depends_on:
-      models_service: 
-        condition: service_started
 
   models_service:
     build:
