@@ -1,10 +1,17 @@
 version: '3.8'
+
 services:
-  models:
-    build:
-      dockerfile: Dockerfile
-      context: models/
-  backend_app:
+  slackbot:
     build:
       dockerfile: Dockerfile
       context: slackBot/
+    depends_on:
+      models_service: 
+        condition: service_started
+
+  models_service:
+    build:
+      dockerfile: Dockerfile
+      context: models/
+    ports:
+      - "8081:8081"

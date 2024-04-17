@@ -5,12 +5,8 @@ opencv-python
 python-decouple
 argparse
 pyyaml
-
-# for hugging face
-diffusers
-accelerate
-transformers
+requests
 
 # fastapi 
-fastapi 
+fastapi
 uvicorn[standard]
